@@ -1,28 +1,35 @@
+import styles from "../styles/submissonList.module.css"
+
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore'
 import firebase from "../firebase/clientApp";
+import "firebase/compat/firestore";
 const db = firebase.firestore();
 
-const [subs, subsLoading, subsError] = useCollection(
-    db.collection("wheelSubmissions"),
-    {}
-);
+const submissionList = () => {
 
+    const [subs, subsLoading, subsError] = useCollection(
 
-const submissionList = () => (
+        db.collection("wheelSubmissions"),
+        {}
 
-    <div>
+    );
+
+    <div clasName={ styles.submissionList }>
 
         {subsLoading && <span>Submissions: Loading...</span>}
         {subs && subs.docs.map((doc) => (
             <div>
-                {JSON.stringify(doc.data())},{' '}
+                <div className={styles.subOdds}></div>
+                    {JSON.stringify(doc.data())},{' '}
+                <div className={styles.subChecked}></div>
+                <span className={styles.clearSubX}>X</span>
             </div>
         ))}
 
 
     </div>
-    
-)
+
+}
 
 export default submissionList
