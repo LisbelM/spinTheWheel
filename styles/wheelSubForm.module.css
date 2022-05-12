@@ -1,3 +1,47 @@
 .subForm {
-    background-color: var(--darkBlue);
+    height: 80%;
+    width: 75%;
+    background-color: var(--navyBlue);
+    color: white;
+    border: solid var(--fadedNavy) 1.5px;
+    border-radius: var(--roundedBorder);
+}
+
+.subForm span {
+    display: block;
+    text-align: center;
+}
+
+.subFormTitle {
+    font-weight: bold;
+}
+
+.subForm input {
+    height: 25%;
+    width: 100%;
+    margin: 0px 15px 15px 15px;
+    background-color: inherit;
+    border: solid var(--fadedNavy) 1.5px;
+    border-radius: var(--roundedBorder);
+}
+
+.subForm button {
+    height: 25%;
+    width: 25%;
+    margin: 15px;
+    color: white;
+    font-weight: bold;
+    border-radius: var(--roundedBorder);
+    background-color: var(--fadedNavy);
+    padding: 5px;
+}
+
+.subForm .submitButton {
+    color: var(--navyBlue);
+    background-color: var(--babyBlue);
+}
+
+.subFormDisclaimer {
+    background-color: var(--fadedNavy);
+    padding: 7.5px;
 }
