@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import firebase from "../firebase/clientApp";
 import "firebase/compat/firestore";
 
@@ -13,7 +13,7 @@ function SubmissionList() {
     const db = firebase.firestore();
     const addSubmission = async (submission) => {
         db.collection('wheelSubmissions').add({
-            /*replace below for mock user values when connection to mainframe*/
+            /*replace below for real admin user values when connection to mainframe*/
             /*usrId: user.id,
             usrName: user.name,*/
             usrId: 1,
@@ -24,9 +24,22 @@ function SubmissionList() {
         });
     }
 
-    /*const delSubmission = async (submission) => {
-        db.collection
-    }*/
+    const delSubmission = async (docID) => {
+        await deleteDoc(doc(db, "wheelSubmissions", docID.replaceAll('"', '')));
+    }
+
+    const updateSubmissionOdds = async (docID, odds) => {
+        const updates = {};
+        updates[`/wheelSubmissions/${docID}/odds`] = odds;
+        return update(ref(db), updates);
+    }
+
+    const selectSubmissionForWheel = async(docID, oldSelectedBool) => {
+        let updates = {};
+        let newSelectedBool = !oldSelectedBool ? true : false;
+        updates[`/wheelSubmissions/${docID.replaceAll('"', '')}/selectedBool`] = newSelectedBool;
+        return update(ref(db), updates);
+    }
 
     const { subs, subsLoading, subsError } = useContext(submissionListContext)
 
@@ -39,7 +52,7 @@ function SubmissionList() {
                 <div className={styles.submission}>
                     <input className={styles.subOdds} placeholder="1"></input>
                     <input ref={selfSubmissionText} className={styles.submissionInfoInput} placeholder="Enter an item"></input>
-                    <button onClick={() => addSubmission(selfSubmissionText.current.value )} className={styles.usrSelfSubAdd}>Add</button>
+                    <button onClick={() => addSubmission(selfSubmissionText.current.value)} className={styles.usrSelfSubAdd}>Add</button>
                 </div>
             </div>
 
@@ -50,14 +63,14 @@ function SubmissionList() {
             {subs && subs.docs.map((doc) => (
                 <div className={styles.submissionContainer}>
                     <div className={styles.submission}>
-                        <input className={styles.subOdds} placeholder="1"></input>
+                        <input onKeyUp={(event) => updateSubmissionOdds(event)} className={styles.subOdds} placeholder="1"></input>
                         <div className={styles.submissionInfo}>
                             <span className={styles.submissionDesc}>{JSON.stringify(doc.data().submission)}</span>
                             <span className={styles.submissionUsr}>{JSON.stringify(doc.data().usrName)}</span>
                         </div>
-                        <div className={styles.subChecked}></div>
+                        <span onClick={() => selectSubmissionForWheel(JSON.stringify(doc.id))} className={styles.subChecked}></span>
                     </div>
-                    <button className={styles.clearSubX}>X</button>
+                    <button onClick={() => delSubmission(JSON.stringify(doc.id))} className={styles.clearSubX}>X</button>
                 </div>
             ))}
 
