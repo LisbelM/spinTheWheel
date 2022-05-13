@@ -1,3 +1,101 @@
-.submissionList {
-    background-color: var(--navyBlue)
+﻿.submissionList {
+    height: 100vh;
+    width: 100%;
+    padding: 15px;
+    background-color: var(--navyBlue);
+    color: white;
 }
+.submissionList hr {
+    opacity: 60%;
+    margin: 30px 0px;
+    border: solid var(--extraFadedNavy) 1.25px;
+}
+.usrSelfSubDiv {
+    height: 50px;
+    margin: 15px 0px;
+    width: 95%;
+}
+.submissionContainer {
+    display: grid;
+    grid-template-columns: 90% 10%;
+    grid-template-rows: auto;
+    grid-row-gap: 5px;
+    grid-column-gap: 15px;
+    min-height: 35px;
+    max-height: min-content;
+    width: 100%;
+    margin: 7.5px 0px;
+}
+.submission {
+    height: 100%;
+    width: 100%;
+    display: inline-grid;
+    grid-template-columns: 40px calc(100% - 70px) 30px;
+    grid-column-gap: 10px;
+    border-radius: var(--roundedBorder);
+    background-color: var(--fadedNavy);
+}
+.submissionInfoInput,
+.submissionInfo {
+    height: 100%;
+    grid-column: 2;
+}
+.submissionInfo span {display: block}
+.submissionInfoInput {
+    color: white;
+    background-color: inherit;
+}
+.submissionDesc {
+    font-weight: bold;
+    font-size: .75rem;
+}
+.submissionUsr {
+    font-size: .6rem;
+    opacity: 60%;
+}
+.subOdds {
+    height: 100%;
+    grid-column: 1;
+    background-color: var(--extraFadedNavy);
+    border-radius: var(--roundedBorder);
+    color: white;
+    text-align: center;
+}
+.subChecked {
+    grid-column: 3;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    height: 75%;
+    width: 75%;
+    border-radius: var(--roundedBorder);
+    background-color: var(--extraFadedNavy);
+    box-sizing: unset;
+}
+.subChecked:hover {
+    background-color: green;
+    cursor: pointer;
+}
+.subChecked:before {
+    content: '✔';
+}
+
+.usrSelfSubAdd {
+    color: rgba(255,255,255,0.6);
+    background-color: inherit;
+    border-radius: var(--roundedBorder);
+    padding-right: 30px;
+}
+.usrSelfSubAdd:hover {
+    color: var(--babyBlue);
+    cursor: pointer;
+}
+.clearSubX {
+    background-color: transparent;
+    color: var(--paleRed);
+}
+.clearSubX:hover {
+    color: var(--red);
+}
+

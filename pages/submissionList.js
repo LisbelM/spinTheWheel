@@ -9,9 +9,10 @@ import { submissionListContext } from "./adminArea"
 function SubmissionList() {
 
     let selfSubmissionText = createRef();
+    let selfSubmissionOdds = createRef();
 
     const db = firebase.firestore();
-    const addSubmission = async (submission) => {
+    const addSubmission = async (submission, odds) => {
         db.collection('wheelSubmissions').add({
             /*replace below for real admin user values when connection to mainframe*/
             /*usrId: user.id,
@@ -19,9 +20,13 @@ function SubmissionList() {
             usrId: 1,
             usrName: 'A big fan',
             submission: submission,
-            odds: 1, /*default*/
-            selectedBool: true, /*default*/
+            odds: odds === '' ? 1 : odds,
+            selectedBool: true, /*admin default*/
         });
+
+        /*clearing*/
+        selfSubmissionText.current.value = '';
+        selfSubmissionOdds.current.value = '';
     }
 
     const delSubmission = async (docID) => {
@@ -50,9 +55,9 @@ function SubmissionList() {
 
             <div className={styles.usrSelfSubDiv}>
                 <div className={styles.submission}>
-                    <input className={styles.subOdds} placeholder="1"></input>
+                    <input ref={selfSubmissionOdds} className={styles.subOdds} placeholder="1"></input>
                     <input ref={selfSubmissionText} className={styles.submissionInfoInput} placeholder="Enter an item"></input>
-                    <button onClick={() => addSubmission(selfSubmissionText.current.value)} className={styles.usrSelfSubAdd}>Add</button>
+                    <button onClick={() => addSubmission(selfSubmissionText.current.value, selfSubmissionOdds.current.value)} className={styles.usrSelfSubAdd}>Add</button>
                 </div>
             </div>
 

@@ -2,17 +2,19 @@ import styles from '../styles/wheelComponent.module.css'
 import React, { useContext, useEffect, useState, useRef } from "react";
 
 import { submissionListContext } from "./adminArea"
+import { winnerContext } from "./adminArea"
 
 const WheelComponent = () => {
 
     const { subs, subsLoading, subsError } = useContext(submissionListContext)
+    const { popUpValues, setWinner } = useContext(winnerContext)
 
     if (subs) {
 
         const segments = []
         subs.docs.forEach(item => {
             console.log(item.data().selectedBool)
-            if (item.data().selectedBool) { segments.push({ value: item.data().submission, odds: item.data().odds }) }
+            if (item.data().selectedBool) { segments.push({ value: item.data().submission, odds: item.data().odds, usr: item.data.usrName}) }
         })
 
         const canvasRef = useRef(null)
@@ -61,12 +63,14 @@ const WheelComponent = () => {
         };
 
         const spin = () => {
-            isStarted = true;
-            if (timerHandle === 0) {
-                spinStart = new Date().getTime();
-                maxSpeed = Math.PI / segments.length;
-                frames = 0;
-                timerHandle = setInterval(onTimerTick, timerDelay);
+            if (segments.length != 0) {
+                isStarted = true;
+                if (timerHandle === 0) {
+                    spinStart = new Date().getTime();
+                    maxSpeed = Math.PI / segments.length;
+                    frames = 0;
+                    timerHandle = setInterval(onTimerTick, timerDelay);
+                }
             }
         };
 
@@ -138,6 +142,11 @@ const WheelComponent = () => {
             ctx.textAlign = "center";
             ctx.font = "0.8em " + fontFamily;
 
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, circleRadius, 0, 2 * Math.PI, false);
+            ctx.fillStyle = "#71DBDB";
+            ctx.fill();
+
             const odds_sum = segments.reduce((total, obj) => parseInt(obj.odds) + total, 0)
             for (let i = 1; i <= len; i++) {
                 const oddForSeg = parseInt(segments[i - 1].odds);
@@ -192,6 +201,16 @@ const WheelComponent = () => {
             ctx.fillStyle = "black";
             ctx.font = "bold 0.8em " + fontFamily;
             currentSegment = segments[i];
+
+            /*user image on needle*/
+            /*replace file path for actual usr image or pull from firestore*/
+/*            let base_image = new Image();
+            base_image.src = '/images/ludwigEmote.webp';
+            ctx.drawImage(base_image, centerX, centerY);
+            base_image.onload = function () {
+                ctx.drawImage(base_image, centerX - 35, centerY - 35, 75, 75);
+            }*/
+
         };
 
         const clear = () => {
@@ -200,7 +219,7 @@ const WheelComponent = () => {
         };
 
         const onFinished = (winner) => {
-            console.log(winner);
+            setWinner({ ...popUpValues, popupBool: true, winnerSubmission: winner.value, winnerUsrName: winner.usr})
         };
 
         useEffect(() => {
@@ -208,7 +227,7 @@ const WheelComponent = () => {
         }, [wheelInit])
 
         return (
-            <canvas onClick={() => spin()} ref={canvasRef} wheelDraw={wheelDraw} width="1000px" height="525px"></canvas>
+            <canvas onClick={() => spin()} ref={canvasRef} wheelDraw={wheelDraw} width="1000px" height="500px" style={{cursor : 'pointer'}}></canvas>
         );
 
     }

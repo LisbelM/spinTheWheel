@@ -1,7 +1,8 @@
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-
-const clientCredentials = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var app_1 = require("firebase/compat/app");
+require("firebase/compat/firestore");
+var clientCredentials = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -9,9 +10,8 @@ const clientCredentials = {
     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
-
-if (!firebase.apps.length) {
-    firebase.initializeApp(clientCredentials);
+if (!app_1.default.apps.length) {
+    app_1.default.initializeApp(clientCredentials);
 }
-
-export default firebase;
+exports.default = app_1.default;
+//# sourceMappingURL=clientApp.js.map

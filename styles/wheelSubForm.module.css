@@ -1,6 +1,7 @@
 .subForm {
-    height: 80%;
-    width: 75%;
+    position: relative;
+    height: 400px;
+    width: 400px;
     background-color: var(--navyBlue);
     color: white;
     border: solid var(--fadedNavy) 1.5px;
@@ -16,18 +17,32 @@
     font-weight: bold;
 }
 
-.subForm input {
-    height: 25%;
+.subFormdiv {
+    margin-top: 15px;
+    height: 40%;
     width: 100%;
-    margin: 0px 15px 15px 15px;
+    padding: 15px;
+}
+
+.subForm input {
+    height: 100%;
+    width: 100%;
+    margin: 10px 0px;
     background-color: inherit;
     border: solid var(--fadedNavy) 1.5px;
     border-radius: var(--roundedBorder);
 }
 
+.subBtnContainer {
+    width: 100%;
+    display: flex;
+    margin: 15px 0px;
+    justify-content: center;
+    text-align: center;
+}
 .subForm button {
-    height: 25%;
-    width: 25%;
+    height: 30px;
+    width: 200px;
     margin: 15px;
     color: white;
     font-weight: bold;
@@ -42,6 +57,9 @@
 }
 
 .subFormDisclaimer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     background-color: var(--fadedNavy);
     padding: 7.5px;
 }

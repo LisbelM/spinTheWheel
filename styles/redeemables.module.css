@@ -1,0 +1,9 @@
+.redeemable btn {
+    color: white;
+    background-color: var(--darkBlue);
+}
+
+.redeemableActive btn {
+    color: green;
+}
+
