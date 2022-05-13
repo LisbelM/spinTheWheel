@@ -1,29 +1,22 @@
 import styles from "../styles/submissionList.module.css"
+import { useContext } from "react"
 
-import { collection, addDoc, getDocs } from 'firebase/firestore';
-import { useCollection } from 'react-firebase-hooks/firestore'
-import firebase from "../firebase/clientApp";
-import "firebase/compat/firestore";
+import { submissionListContext } from "./adminArea"
 
+function SubmissionList() {
 
-const submissionList = () => {
-    const db = firebase.firestore();
-    const [subs, subsLoading, subsError] = useCollection(
-        db.collection("wheelSubmissions"),
-        {}
-    );
-
-    console.log(subs)
+    const { subs, subsLoading, subsError } = useContext(submissionListContext)
 
     return (
         <div className={styles.submissionList}>
 
-            <span>Wheel Items ()</span>
+            <span> Wheel Items ({})</span>
 
-            <div className={styles}>
+            <div className={styles.usrSelfSubDiv}>
                 <div className={styles.submission}>
                     <input className={styles.subOdds} placeholder="1"></input>
                     <input className={styles.submissionInfoInput} placeholder="Enter an item"></input>
+                    <button className={styles.usrSelfSubAdd}>Add</button>
                 </div>
             </div>
 
@@ -32,7 +25,7 @@ const submissionList = () => {
             {subsError && <strong>Error: {JSON.stringify(subsError)}</strong>}
             {subsLoading && <span>Submissions: Loading...</span>}
             {subs && subs.docs.map((doc) => (
-                <div>
+                <div style={{ width: '100%', height: '100%'}}>
                     <div className={styles.submission}>
                         <input className={styles.subOdds} placeholder="1"></input>
                         <div className={styles.submissionInfo}>
@@ -50,4 +43,4 @@ const submissionList = () => {
 
 }
 
-export default submissionList
+export { SubmissionList }
