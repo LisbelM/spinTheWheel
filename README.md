@@ -10,7 +10,7 @@ Admin ability to select & diselect submissions
 	reflected on Spinner Wheel
 Admin ability to delete submissions
 
-Missing:
+<b>Missing:</b>
 
 Design details scattered throughout
 Error page on user side
@@ -19,7 +19,7 @@ Spin history for Admin
 Confetti overlay for winner popup
 Hover effect for selected submission on Admin page
 
-Bugs (identified) & Next Steps:
+<b>Bugs (identified) & Next Steps:</b>
 
 Rendering of popup causes a Spinner Wheel to rerender as well losing arrows place and looking glitchy
 	Fix : render popup seperately
