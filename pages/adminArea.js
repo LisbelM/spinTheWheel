@@ -1,3 +1,6 @@
+import styles from "../styles/adminArea.module.css"
+import { SubmissionList } from "./submissionList"
+import WheelComponent from "./wheelComponent";
 import { createContext } from "react"
 
 import { collection, addDoc, getDocs } from 'firebase/firestore';
@@ -5,15 +8,17 @@ import { useCollection } from 'react-firebase-hooks/firestore'
 import firebase from "../firebase/clientApp";
 import "firebase/compat/firestore";
 
-import styles from "../styles/adminArea.module.css"
-import { SubmissionList } from "./submissionList"
-import { WheelCanvas } from "./wheelComponent"
+export const submissionListContext = createContext({ subs : [] , subsLoading : [], subsError : []});
 
-export const submissionListContext = createContext();
-
-const adminArea = () => {
+export default function App() {
 
     const db = firebase.firestore();
+
+/*    const getSpinHistory = async () => {
+        db.collection('wheelSubmissions'),
+        {}
+    }*/
+
     const [subs, subsLoading, subsError] = useCollection(
         db.collection("wheelSubmissions"),
         {}
@@ -22,15 +27,14 @@ const adminArea = () => {
     return (
         <submissionListContext.Provider value={{ subs, subsLoading, subsError }}>
             <div className={styles.adminArea}>
-                <WheelCanvas />
+                <WheelComponent />
                 <SubmissionList />
 
-                {/*       <button>Spin History</button>
-                <button>End Wheel</button>*/}
+                <div className={styles.adminBtnsContainer}>
+                    <button className={styles.spinHistBtn}>Spin History</button>
+                    <button className={styles.endWheelBtn}>End Wheel</button>
+                </div>
             </div>
         </submissionListContext.Provider>
-    )
-
+    );
 }
-
-export default adminArea
