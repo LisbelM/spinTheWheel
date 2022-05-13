@@ -1,4 +1,4 @@
-Completed Tasks:
+<b>Completed Tasks:</b>
 
 Insert by User
 Insert by Admin in Admin Landing page
