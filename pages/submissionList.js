@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, doc, deleteDoc, update} from 'firebase/firestore';
 import firebase from "../firebase/clientApp";
 import "firebase/compat/firestore";
 
@@ -20,7 +20,7 @@ function SubmissionList() {
             usrName: 'A big fan',
             submission: submission,
             odds: 1, /*default*/
-            selectedBool: false, /*default*/
+            selectedBool: true, /*default*/
         });
     }
 
@@ -35,10 +35,10 @@ function SubmissionList() {
     }
 
     const selectSubmissionForWheel = async(docID, oldSelectedBool) => {
-        let updates = {};
-        let newSelectedBool = !oldSelectedBool ? true : false;
-        updates[`/wheelSubmissions/${docID.replaceAll('"', '')}/selectedBool`] = newSelectedBool;
-        return update(ref(db), updates);
+        let newSelectedBool = oldSelectedBool === 'false' ? true : false;
+        db.collection("wheelSubmissions").doc(docID.replaceAll('"', '')).update({
+            selectedBool: newSelectedBool
+        })
     }
 
     const { subs, subsLoading, subsError } = useContext(submissionListContext)
@@ -61,17 +61,19 @@ function SubmissionList() {
             {subsError && <strong>Error: {JSON.stringify(subsError)}</strong>}
             {subsLoading && <span>Submissions: Loading...</span>}
             {subs && subs.docs.map((doc) => (
+
                 <div className={styles.submissionContainer}>
                     <div className={styles.submission}>
                         <input onKeyUp={(event) => updateSubmissionOdds(event)} className={styles.subOdds} placeholder="1"></input>
                         <div className={styles.submissionInfo}>
-                            <span className={styles.submissionDesc}>{JSON.stringify(doc.data().submission)}</span>
-                            <span className={styles.submissionUsr}>{JSON.stringify(doc.data().usrName)}</span>
+                            <span className={styles.submissionDesc}>{JSON.stringify(doc.data().submission).replaceAll('"', '')}</span>
+                            <span className={styles.submissionUsr}>{JSON.stringify(doc.data().usrName).replaceAll('"', '')}</span>
                         </div>
-                        <span onClick={() => selectSubmissionForWheel(JSON.stringify(doc.id))} className={styles.subChecked}></span>
+                        <div onClick={() => selectSubmissionForWheel(JSON.stringify(doc.id), JSON.stringify(doc.data().selectedBool))} className={styles.subChecked}></div>
                     </div>
-                    <button onClick={() => delSubmission(JSON.stringify(doc.id))} className={styles.clearSubX}>X</button>
-                </div>
+{/*                    <button onClick={() => delSubmission(JSON.stringify(doc.id))} className={styles.clearSubX}>X</button>
+*/}                </div>
+
             ))}
 
         </div>
