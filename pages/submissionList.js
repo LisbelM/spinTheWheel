@@ -1,9 +1,32 @@
-import styles from "../styles/submissionList.module.css"
-import { useContext } from "react"
+import { collection, addDoc, getDocs } from 'firebase/firestore';
+import firebase from "../firebase/clientApp";
+import "firebase/compat/firestore";
 
+import styles from "../styles/submissionList.module.css"
+import { useContext, createRef } from "react"
 import { submissionListContext } from "./adminArea"
 
 function SubmissionList() {
+
+    let selfSubmissionText = createRef();
+
+    const db = firebase.firestore();
+    const addSubmission = async (submission) => {
+        db.collection('wheelSubmissions').add({
+            /*replace below for mock user values when connection to mainframe*/
+            /*usrId: user.id,
+            usrName: user.name,*/
+            usrId: 1,
+            usrName: 'A big fan',
+            submission: submission,
+            odds: 1, /*default*/
+            selectedBool: false, /*default*/
+        });
+    }
+
+    /*const delSubmission = async (submission) => {
+        db.collection
+    }*/
 
     const { subs, subsLoading, subsError } = useContext(submissionListContext)
 
@@ -15,8 +38,8 @@ function SubmissionList() {
             <div className={styles.usrSelfSubDiv}>
                 <div className={styles.submission}>
                     <input className={styles.subOdds} placeholder="1"></input>
-                    <input className={styles.submissionInfoInput} placeholder="Enter an item"></input>
-                    <button className={styles.usrSelfSubAdd}>Add</button>
+                    <input ref={selfSubmissionText} className={styles.submissionInfoInput} placeholder="Enter an item"></input>
+                    <button onClick={() => addSubmission(selfSubmissionText.current.value )} className={styles.usrSelfSubAdd}>Add</button>
                 </div>
             </div>
 
@@ -25,7 +48,7 @@ function SubmissionList() {
             {subsError && <strong>Error: {JSON.stringify(subsError)}</strong>}
             {subsLoading && <span>Submissions: Loading...</span>}
             {subs && subs.docs.map((doc) => (
-                <div style={{ width: '100%', height: '100%'}}>
+                <div className={styles.submissionContainer}>
                     <div className={styles.submission}>
                         <input className={styles.subOdds} placeholder="1"></input>
                         <div className={styles.submissionInfo}>
@@ -34,7 +57,7 @@ function SubmissionList() {
                         </div>
                         <div className={styles.subChecked}></div>
                     </div>
-                    <span className={styles.clearSubX}>X</span>
+                    <button className={styles.clearSubX}>X</button>
                 </div>
             ))}
 
