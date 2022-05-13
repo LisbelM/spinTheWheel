@@ -138,11 +138,10 @@ const WheelComponent = () => {
             ctx.textAlign = "center";
             ctx.font = "0.8em " + fontFamily;
 
-            const odds_sum = segments.reduce((total, obj) => obj.odds + total, 0)
+            const odds_sum = segments.reduce((total, obj) => parseInt(obj.odds) + total, 0)
             for (let i = 1; i <= len; i++) {
-                const oddForSeg = segments[i - 1].odds;
-                const angle = 2 * Math.PI * (oddForSeg / odds_sum) + angleCurrent;
-                console.log(angle)
+                const oddForSeg = parseInt(segments[i - 1].odds);
+                const angle = (2 * Math.PI * (oddForSeg / odds_sum)) + lastAngle;
                 drawSegment(i - 1, lastAngle, angle);
                 lastAngle = angle;
             }
@@ -165,7 +164,7 @@ const WheelComponent = () => {
             ctx.arc(centerX, centerY, circleRadius, 0, 2 * Math.PI, false);
             ctx.closePath();
 
-            ctx.lineWidth = 10;
+            ctx.lineWidth = 6;
             ctx.strokeStyle = '#f7f7f7';
             ctx.stroke();
 
