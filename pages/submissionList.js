@@ -29,9 +29,9 @@ function SubmissionList() {
     }
 
     const updateSubmissionOdds = async (docID, odds) => {
-        const updates = {};
-        updates[`/wheelSubmissions/${docID}/odds`] = odds;
-        return update(ref(db), updates);
+        db.collection("wheelSubmissions").doc(docID.replaceAll('"', '')).update({
+            odds: odds
+        })
     }
 
     const selectSubmissionForWheel = async(docID, oldSelectedBool) => {
@@ -64,15 +64,15 @@ function SubmissionList() {
 
                 <div className={styles.submissionContainer}>
                     <div className={styles.submission}>
-                        <input onKeyUp={(event) => updateSubmissionOdds(event)} className={styles.subOdds} placeholder="1"></input>
+                        <input onKeyUp={(event) => updateSubmissionOdds(JSON.stringify(doc.id), event.target.value)} className={styles.subOdds} placeholder={doc.data().odds}></input>
                         <div className={styles.submissionInfo}>
                             <span className={styles.submissionDesc}>{JSON.stringify(doc.data().submission).replaceAll('"', '')}</span>
                             <span className={styles.submissionUsr}>{JSON.stringify(doc.data().usrName).replaceAll('"', '')}</span>
                         </div>
                         <div onClick={() => selectSubmissionForWheel(JSON.stringify(doc.id), JSON.stringify(doc.data().selectedBool))} className={styles.subChecked}></div>
                     </div>
-{/*                    <button onClick={() => delSubmission(JSON.stringify(doc.id))} className={styles.clearSubX}>X</button>
-*/}                </div>
+                    <button onClick={() => delSubmission(JSON.stringify(doc.id))} className={styles.clearSubX}>X</button>
+                </div>
 
             ))}
 
