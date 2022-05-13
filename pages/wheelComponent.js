@@ -11,7 +11,8 @@ const WheelComponent = () => {
 
         const segments = []
         subs.docs.forEach(item => {
-            segments.push({ value: item.data().submission, odds: item.data().odds })
+            console.log(item.data().selectedBool)
+            if (item.data().selectedBool) { segments.push({ value: item.data().submission, odds: item.data().odds }) }
         })
 
         const canvasRef = useRef(null)
@@ -44,9 +45,9 @@ const WheelComponent = () => {
         let spinStart = 0;
         let frames = 0;
 
-        const centerX = 200;
-        const centerY = 200;
-        const circleRadius = 150;
+        const centerX = 500;
+        const centerY = 250;
+        const circleRadius = 225;
 
         const wheelInit = () => {
             initCanvas();
@@ -55,12 +56,6 @@ const WheelComponent = () => {
 
         const initCanvas = () => {
             let canvas = canvasRef.current;
-            if (navigator.appVersion.indexOf("MSIE") !== -1) {
-                canvas.setAttribute("width", 1000);
-                canvas.setAttribute("height", 600);
-                canvas.setAttribute("id", "canvas");
-                document.getElementById("wheel").appendChild(canvas);
-            }
             canvas.addEventListener("click", spin, false);
             canvasContext = canvas.getContext("2d");
         };
@@ -146,7 +141,8 @@ const WheelComponent = () => {
             const odds_sum = segments.reduce((total, obj) => obj.odds + total, 0)
             for (let i = 1; i <= len; i++) {
                 const oddForSeg = segments[i - 1].odds;
-                const angle = 2 * Math.PI * (i / len) + angleCurrent;
+                const angle = 2 * Math.PI * (oddForSeg / odds_sum) + angleCurrent;
+                console.log(angle)
                 drawSegment(i - 1, lastAngle, angle);
                 lastAngle = angle;
             }
@@ -169,7 +165,7 @@ const WheelComponent = () => {
             ctx.arc(centerX, centerY, circleRadius, 0, 2 * Math.PI, false);
             ctx.closePath();
 
-            ctx.lineWidth = 6;
+            ctx.lineWidth = 10;
             ctx.strokeStyle = '#f7f7f7';
             ctx.stroke();
 
@@ -213,7 +209,7 @@ const WheelComponent = () => {
         }, [wheelInit])
 
         return (
-            <canvas onClick={() => spin()} ref={canvasRef} wheelDraw={wheelDraw} width="500px" height="500px"></canvas>
+            <canvas onClick={() => spin()} ref={canvasRef} wheelDraw={wheelDraw} width="1000px" height="525px"></canvas>
         );
 
     }
