@@ -30,11 +30,11 @@
 	<li>flashes</li>
 		<li>Fix: create a seperate canvas object apart from wheel that will hold the chosen admin image</li>
 
-	<li>Data structure used for holding data incoming from Firestore does not delete old objects once admin has deleted</li>
-	causes respins of wheel to have more submissions than on list
-		<li>Fix: change data structure to have a entries be identified by doc.id & delete appropriately in same function </li>
-		that document is removed from collection in Firestore
+	<li>Data structure used for holding data incoming from Firestore does not delete old objects once admin has deleted causes respins of wheel to have more submissions than on list</li>
+	
+		<li>Fix: change data structure to have a entries be identified by doc.id & delete appropriately in same function 
+		that document is removed from collection in Firestore</li>
 
-	<li>(not a bug) make existing popup for winner to be a component with props to be passed and use this component</li>
-	to create all other popups required
+	<li>(not a bug) make existing popup for winner to be a component with props to be passed and use this component
+	to create all other popups required</li>
 </ul>
